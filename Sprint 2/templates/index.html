@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chatbot</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <h1>Chatbot</h1>
+    <div id="conversation"></div>
+    <form id="chat-form">
+        <input type="text" id="question" placeholder="Escribe tu pregunta" />
+        <button type="submit">Enviar</button>
+    </form>
+
+    <script>
+        $(document).ready(function() {
+            $('#chat-form').submit(function(event) {
+                event.preventDefault();
+                var question = $('#question').val();
+                var conversation = $('#conversation').html();  // Utilizar .html() en lugar de .text()
+                    console.log(conversation);
+                $.ajax({
+                    url: '/chat',
+                    type: 'POST',
+                    data: {
+                        question: question,
+                        conversation: conversation
+                    },
+                    success: function(response) {
+                        $('#conversation').html(response.conversation);  // Utilizar .html() en lugar de .text()
+                        //$('#conversation').append('<p><strong>AI:</strong> ' + response.answer + '</p>');
+                        $('#question').val('');
+                    }
+                });
+            });
+        });
+    </script>
+    
+</body>
+</html>
