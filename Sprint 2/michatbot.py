@@ -8,8 +8,8 @@ from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.feature_extraction.text import TfidfTransformer
 
-openai.api_key = "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"
-openai.organization = "org-OB4THAkEBAWQWhxKZhodli7j"
+openai.api_key = "ADD API KEY"
+openai.organization = "ADD ORGANIZATION NUMBER"
 
 app = Flask(__name__, static_folder='static')
 
