@@ -8,15 +8,21 @@ from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.feature_extraction.text import TfidfTransformer
 
-openai.api_key = "ADD API KEY"
-openai.organization = "ADD ORGANIZATION NUMBER"
+openai.api_key = "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"
+openai.organization = "org-OB4THAkEBAWQWhxKZhodli7j"
 
 app = Flask(__name__, static_folder='static')
 
 conversation = []  # Definimos conversation como una lista vacía
 
-# Cargar el archivo JSON
-with open('data/entrenamiento.json', 'r') as file:
+# Obtén la ruta absoluta del directorio actual
+dir_path = os.path.dirname(os.path.realpath(__file__))
+
+# Construye la ruta completa al archivo 'entrenamiento.json'
+file_path = os.path.join(dir_path, 'data/entrenamiento.json')
+
+# Lee el archivo JSON
+with open(file_path, 'r') as file:
     data = json.load(file)
 
 # Obtener las preguntas y respuestas
