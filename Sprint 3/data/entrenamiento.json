@@ -1,0 +1,14 @@
+{
+    "examples": [
+      {
+        "question": "¿Cuál es la mejor forma de ejercitarse para las personas mayores?",
+        "answer": "Es recomendable que las personas mayores realicen ejercicios de bajo impacto, como caminar, nadar o hacer yoga. También es importante consultar con un médico antes de comenzar cualquier programa de ejercicios."
+      },
+      {
+        "question": "¿Cómo puedo ayudar a una persona mayor a mantener una alimentación saludable?",
+        "answer": "Es importante ofrecer una dieta equilibrada y variada, rica en frutas, verduras, proteínas magras y granos integrales. Además, asegúrate de proporcionarles suficiente agua y evitar alimentos procesados y altos en sodio."
+      }
+      
+    ]
+  }
+  
