@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Formulario</title>
+</head>
+<body>
+    <h1>Formulario</h1>
+    <form id="formulario">
+        <label for="text">Añade la Nueva Información Médica:</label>
+        <input type="text" id="text" name="text" required>
+        <button type="submit">Enviar</button>
+    </form>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        // Agregar cualquier script adicional aquí si es necesario
+        
+        $(document).ready(function() {
+            $('#formulario').submit(function(event) {
+                event.preventDefault(); // Evita que el formulario se envíe de forma predeterminada
+                
+                var text = $('#text').val();
+                
+                // Realizar una solicitud AJAX al servidor para guardar los datos
+                $.ajax({
+                    url: '/guardar_historial',
+                    type: 'POST',
+                    data: {
+                        text: text
+                    },
+                    success: function(response) {
+                        //console.log(response); // La respuesta del servidor
+                        window.location.href = '/chat';
+                        // Realizar cualquier otra acción necesaria después de guardar los datos
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

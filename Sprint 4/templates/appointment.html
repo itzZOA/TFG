@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Formulario</title>
+</head>
+<body>
+    <h1>Formulario</h1>
+    <form id="formulario">
+        <label for="lugar">Lugar:</label>
+        <input type="text" id="lugar" name="lugar" required>
+        
+        <label for="hora">Fecha:</label>
+        <input type="datetime-local" id="hora" name="hora" required>
+        
+        <button type="submit">Enviar</button>
+    </form>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        // Agregar cualquier script adicional aquí si es necesario
+        
+        $(document).ready(function() {
+            $('#formulario').submit(function(event) {
+                event.preventDefault(); // Evita que el formulario se envíe de forma predeterminada
+                
+                var lugar = $('#lugar').val();
+                var hora = $('#hora').val();
+                
+                // Realizar una solicitud AJAX al servidor para guardar los datos
+                $.ajax({
+                    url: '/guardar_datos',
+                    type: 'POST',
+                    data: {
+                        lugar: lugar,
+                        hora: hora
+                    },
+                    success: function(response) {
+                        //console.log(response); // La respuesta del servidor
+                        window.location.href = '/chat';
+                        // Realizar cualquier otra acción necesaria después de guardar los datos
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

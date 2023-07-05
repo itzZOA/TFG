@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chatbot</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    
+    <h1>Chatbot</h1>
+    <div id="conversation"></div>
+    <form id="chat-form">
+        <input type="text" id="question" placeholder="Escribe tu pregunta" />
+        <button type="submit">Enviar</button>
+    </form>
+
+    <div id="boton" class="botones"> 
+    <form id="citas">
+        <button id="appointment" type="submit">Mis Citas</button>
+    </form>
+
+    <form id="recordatorios">
+        <button id="reminders" type="submit">Mis Recordatorios</button>
+    </form>
+
+    <form id="historial">
+        <button id="history" type="submit">Mi Historial Médico</button>
+    </form>
+
+    </div>
+    <div class="menu-toggle">
+        <div class="hamburger"></div>
+    </div>
+    <div class="menu">
+        <ul>
+            <li><a href="#">Inicio</a></li>
+            <li><a href="/appointment.html">Añadir Cita</a></li>
+            <li><a href="/history.html">Añadir Entrada Historial Médico</a></li>
+            <li><a href="/reminders.html">Añadir Recordatorio</a></li>
+            <li><a href="#">Contacto</a></li>
+        </ul>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            $('#chat-form').submit(function(event) {
+                event.preventDefault();
+                
+                var conversation_id = "{{ conversation_id }}";
+                var question = $('#question').val();
+                var conversation = $('#conversation').html();  // Utilizar .html() en lugar de .text()
+                
+                $.ajax({
+                    url: '/chat/' + conversation_id,
+                    type: 'POST',
+                    data: {
+                        question: question,
+                        conversation: conversation
+                    },
+                    success: function(response) {
+                        $('#conversation').html(response.conversation);  // Utilizar .html() en lugar de .text()
+                        //$('#conversation').append('<p><strong>AI:</strong> ' + response.answer + '</p>');
+                        $('#question').val('');
+                    }
+                });
+            });
+        });
+
+        $('#citas').submit(function (event) {
+                event.preventDefault();
+
+                var conversation = $('#conversation').html();  // Utilizar .html() en lugar de .text()
+
+                $.ajax({
+                    url: '/citas',
+                    type: 'GET',
+
+                    success: function (response) {
+                        $('#conversation').html(conversation += response);  //Concatenamos la conve con el resultado de las citas
+                    }
+                });
+            });
+        
+         $('#recordatorios').submit(function (event) {
+                event.preventDefault();
+
+                var conversation = $('#conversation').html();  // Utilizar .html() en lugar de .text()
+
+                $.ajax({
+                    url: '/recordatorios',
+                    type: 'GET',
+
+                    success: function (response) {
+                        $('#conversation').html(conversation += response);  //Concatenamos la conve con el resultado de las citas
+                    }
+                });
+            });
+        
+            
+         $('#historial').submit(function (event) {
+                event.preventDefault();
+
+                var conversation = $('#conversation').html();  // Utilizar .html() en lugar de .text()
+
+                $.ajax({
+                    url: '/historial',
+                    type: 'GET',
+
+                    success: function (response) {
+                        $('#conversation').html(conversation += response);  //Concatenamos la conve con el resultado de las citas
+                    }
+                });
+            });
+
+        const menuToggle = document.querySelector('.menu-toggle');
+        const menu = document.querySelector('.menu');
+
+        menuToggle.addEventListener('click', function () {
+            menuToggle.classList.toggle('open');
+            menu.classList.toggle('open');
+        });
+
+       
+        function toggleConversations() {
+            var conversationsMenu = document.querySelector('.conversations-menu');
+            conversationsMenu.classList.toggle('open');
+        }
+        
+    </script>
+
+    
+</body>
+</html>
