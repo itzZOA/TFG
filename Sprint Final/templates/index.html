@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Chatbot</title>
+	<link rel="shortcut icon" href="../static/imgs/logo.png" type="image/x-icon">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+	<link href="https://fonts.googleapis.com/css2?family=Crimson+Text&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+		<section class="textos-header">
+			<h1>Chatbot</h1>
+			<div class="wave" style="height: 150px; overflow: hidden;" ><svg viewBox="0 	0 500 150" preserveAspectRatio="none" style="height: 100%; width: 				100%;"><path d="M0.00,49.98 C149.99,150.00 349.20,-49.98 500.00,49.98 L500.00,150.00 L0.00,150.00 Z" style="stroke: none; fill: #fff;"></path></svg>
+			</div>
+		</section>
+	</header>
+    <div class="container bottom-bar" id="main-container">
+        <div id="conversation" class="conversation"></div>
+            
+            <div class="bottom-bar">
+                <form id="chat-form" class="bottom-bar">
+                    <input type="text" class="question-input" id="question" placeholder="Escribe tu pregunta" />
+                    <button type="submit" class="submit-button">Enviar</button>
+                </form>
+                
+                <div class="button-container">
+                    <div>
+                        <form id="citas">
+                            <button id="appointment" class="with-margin" type="submit">Mis Citas</button>
+                        </form>
+                    </div>
+                   
+                    <div>
+                        <form id="recordatorios">
+                            <button id="reminders" class="with-margin" type="submit">Mis Recordatorios</button>
+                        </form>
+                    </div>
+                    
+                    <div>
+                        <form id="historial">
+                            <button id="history" type="submit">Mi Historial</button>
+                        </form>
+                    </div>
+                    
+                </div>
+            </div>
+    </div>
+
+    <div class="menu-toggle">
+        <div class="hamburger"></div>
+    </div>
+    <div class="menu">
+        <ul>
+            <li><a href="#">Inicio</a></li>
+            <li><a href="/appointment.html">Añadir Cita</a></li>
+            <li><a href="/history.html">Añadir Historial Médico</a></li>
+            <li><a href="/reminders.html">Añadir Recordatorio</a></li>
+            <li><a href="/logout">Cerrar Sesión</a></li>
+        </ul>
+        <div class="copyright">
+            <div class="name">  © 2023 Claudia Salado Méndez</div>
+            <div class="rights">Todos los derechos reservados</div>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            $('#chat-form').submit(function(event) {
+                event.preventDefault();
+                
+                var question = $('#question').val();
+                var conversation = $('#conversation').html();  // Utilizar .html() en lugar de .text()
+                
+                $.ajax({
+                    url: '/chat',
+                    type: 'POST',
+                    data: {
+                        question: question,
+                        conversation: conversation
+                    },
+                    success: function(response) {
+                        $('#conversation').html(response.conversation);  // Utilizar .html() en lugar de .text()
+                        //$('#conversation').append('<p><strong>AI:</strong> ' + response.answer + '</p>');
+                        $('#question').val('');
+                    }
+                });
+            });
+        });
+
+        $('#citas').submit(function (event) {
+                event.preventDefault();
+
+                var conversation = $('#conversation').html();  // Utilizar .html() en lugar de .text()
+
+                $.ajax({
+                    url: '/citas',
+                    type: 'GET',
+
+                    success: function (response) {
+                        $('#conversation').html(conversation += response);  //Concatenamos la conve con el resultado de las citas
+                    }
+                });
+            });
+        
+         $('#recordatorios').submit(function (event) {
+                event.preventDefault();
+
+                var conversation = $('#conversation').html();  // Utilizar .html() en lugar de .text()
+
+                $.ajax({
+                    url: '/recordatorios',
+                    type: 'GET',
+
+                    success: function (response) {
+                        $('#conversation').html(conversation += response);  //Concatenamos la conve con el resultado de las citas
+                    }
+                });
+            });
+        
+            
+         $('#historial').submit(function (event) {
+                event.preventDefault();
+
+                var conversation = $('#conversation').html();  // Utilizar .html() en lugar de .text()
+
+                $.ajax({
+                    url: '/historial',
+                    type: 'GET',
+
+                    success: function (response) {
+                        $('#conversation').html(conversation += response);  //Concatenamos la conve con el resultado de las citas
+                    }
+                });
+            });
+
+            const menuToggle = document.querySelector('.menu-toggle');
+            const menu = document.querySelector('.menu');
+
+            menuToggle.addEventListener('click', function(event) {
+                event.preventDefault();
+                menuToggle.classList.toggle('open');
+                menu.classList.toggle('open');
+            });
+
+            document.addEventListener('click', function(event) {
+                if (!menu.contains(event.target) && !menuToggle.contains(event.target)) {
+                    menuToggle.classList.remove('open');
+                    menu.classList.remove('open');
+                }
+            });
+
+            function toggleConversations() {
+                var conversationsMenu = document.querySelector('.conversations-menu');
+                conversationsMenu.classList.toggle('open');
+            }
+
+    </script>
+
+    
+</body>
+</html>
